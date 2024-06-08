@@ -205,6 +205,7 @@ print('Questão 8 - Medidas de Sumarização\n')
 print('------------------------------------------------------')
 print('8.a')
 print('------------------------------------------------------')
+print(dfInfluencers['Numero de Postagens']].agg(['min','max', 'mean']))
 
 print('\n------------------------------------------------------')
 print('8.b')
