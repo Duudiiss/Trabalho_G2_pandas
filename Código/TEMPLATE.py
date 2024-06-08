@@ -197,7 +197,7 @@ print('\n==============================================')
 print('Questão 8 - Medidas de Sumarização\n')
 #======================================================================
 # a) Mostrar valores minimo, maximo e médio da coluna Pontuação
-# b) A partir da coluna ‘posts’ pensar em agrupar os influencers pela 
+# b) A partir da coluna ‘Numero de Postagens’ pensar em agrupar os influencers pela 
 # quantidade de posts. Mostrar influencers que postam muitos posts.
 # c) Agrupar influencers pelo país e pela coluna faixa de pontuação.
 #======================================================================
