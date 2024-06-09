@@ -76,22 +76,34 @@ print('Questão 1\n')
 # Transformando o tipo do arquivo e renomeando as colunas do inglês para português
 #======================================================================
 dfInfluencers = pd.read_excel("Base_de_Dados\\top_insta_influencers_data.xlsx", header= 0 , index_col= 1)
-dfInfluencers.rename(columns= {'channel_info': 'Nome do Canal', 'influence_score': 'Pontuação', 'posts': 'Numero de Postagens', 
-                              'followers': 'Numero de Seguidores', 'avg_likes': 'Média de Curtidas', 
-                              '60_day_eng_rate': 'Taxa de Engajamento em 60 dias', 'new_post_avg_like': 'Média de Curtidas em Novas Postagens',
-                              'total_likes': 'Total de Curtidas', 'country': 'País'}, inplace = True)
+dfInfluencers.rename(columns= {'channel_info': 'Nome do Canal', 'influence_score': 'Pontuação', 
+                               'posts': 'Numero de Postagens', 'followers': 'Numero de Seguidores', 
+                               'avg_likes': 'Média de Curtidas', 'country': 'País', 
+                              '60_day_eng_rate': 'Taxa de Engajamento em 60 dias (%)', 
+                              'new_post_avg_like': 'Média de Curtidas em Novas Postagens',
+                              'total_likes': 'Total de Curtidas'}, inplace = True)
 
 print(dfInfluencers)
 
 print('\n==============================================')
 print('Questão 2 - Substituição de valores\n')
 #======================================================================
-# Substituir os ‘m’ por 1000000 ex: 6m = 6.000.000
+# Substituir os valores que terminam em 'k', 'm', 'b', para numérico 
+# ex: 6m = 6.000.000
 #======================================================================
 print('/n------------------------------------------------------')
 print('2-')
+colunas = ['Numero de Postagens', 'Total de Curtidas', 'Média de Curtidas em Novas Postagens', 
+           'Numero de Seguidores', 'Média de Curtidas']
+for col in colunas:
+    dfInfluencers[col] = dfInfluencers[col].str.replace('.', '')
 
-# Arrumar um jeito de converter essa coluna para numérico
+    dfInfluencers[col] = dfInfluencers[col].str.replace('k', '00')
+    dfInfluencers[col] = dfInfluencers[col].str.replace('m', '00000')
+    dfInfluencers[col] = dfInfluencers[col].str.replace('b', '00000000')
+    dfInfluencers[col] = pd.to_numeric(dfInfluencers[col])
+    
+print(dfInfluencers)
 
 print('------------------------------------------------------')
 
@@ -113,9 +125,9 @@ print('------------------------------------------------------')
 print('/n------------------------------------------------------')
 print('3.b')
 
-# media = dfInfluencers['Média de Curtidas em Novas Postagens'].mean()
-# print(media)
-# dfInfluencers['Média de Curtidas em Novas Postagens'].fillna(media)
+media = dfInfluencers['Média de Curtidas em Novas Postagens'].mean()
+dfInfluencers['Média de Curtidas em Novas Postagens'].fillna(media, inplace=True)
+print(dfInfluencers['Média de Curtidas em Novas Postagens'])
 
 print('------------------------------------------------------')
 
@@ -125,19 +137,26 @@ print('------------------------------------------------------')
 print('\n==============================================')
 print('Questão 4 -  Criar Categorias em função do valor de uma coluna\n')
 #======================================================================
-# a) Criar coluna ‘faixa total de likes’ que categoriza os influencers em 
-# 3 faixas de acordo com a coluna ‘total likes’.
-# b) Criar coluna ‘faixa de pontuação’ que categoriza os influencers de 
-# acordo com a coluna ‘influencer score’.
+# a) Crie e exiba a coluna 'Crescimento/Engajamento' que categoriza os influencers
+# em 3 faixas de acordo com a coluna ‘Taxa de Engajamento em 60 dias’.
+#
+# b) Criar coluna ‘Faixa de Pontuação’ que categoriza os influencers em 
+# 'Baixa', 'Média', 'Alta', 'Muito Alta' de acordo com a coluna ‘Pontuação’
+# e exiba os influencers com pontuaçãi 'Média'.
 #======================================================================
 print('/n------------------------------------------------------')
 print('4.a')
 print('------------------------------------------------------')
+dfInfluencers['Crescimento/Engajamento'] = pd.cut(dfInfluencers['Total de Curtidas'], 
+                                               bins=3,labels=['Baixo', 'Médio', 'Alto'])
+print(dfInfluencers['Crescimento/Engajamento'])
 
 print('/n------------------------------------------------------')
 print('4.b')
 print('------------------------------------------------------')
-
+dfInfluencers['Faixa de Pontuação'] = pd.cut(dfInfluencers['Pontuação'], bins=[0,30,60,90,100],
+                                             labels=['Baixa', 'Média', 'Alta', 'Muito Alta'])
+print(dfInfluencers.loc[dfInfluencers['Faixa de Pontuação'] =='Média'])
 
 print('\n==============================================')
 print('Questão 5 - Filtros\n')
@@ -196,28 +215,31 @@ print('------------------------------------------------------')
 print('\n==============================================')
 print('Questão 8 - Medidas de Sumarização\n')
 #======================================================================
-# a) Mostrar valores minimo, maximo e médio da coluna Pontuação
-# b) A partir da coluna ‘Numero de Postagens’ pensar em agrupar os influencers pela 
-# quantidade de posts. Mostrar influencers que postam muitos posts.
-# c) Agrupar influencers pelo país e pela coluna faixa de pontuação.
+# a) Mostrar valores minimo, maximo e médio da coluna 'Numero de Postagens'.
+# b) A partir da coluna ‘País’ agrupar os influencers e mosrtrar o total de 
+# curtidas dos influencers brasileiros.
+# c) Agrupar influencers por 'País' e 'Faixa de Pontuação' e exibir o total 
+# de curtida de brasileiros por Faixas de Pontuação.
 #======================================================================
 
 print('------------------------------------------------------')
 print('8.a')
 print('------------------------------------------------------')
-print(dfInfluencers['Numero de Postagens']].agg(['min','max', 'mean']))
+print(dfInfluencers['Numero de Postagens'].agg(['min','max', 'mean']))
 
 print('\n------------------------------------------------------')
 print('8.b')
 print('------------------------------------------------------')
-
+dfAgrupado = dfInfluencers.groupby(by=dfInfluencers['País'])['Total de Curtidas'].sum()
+print('Total de curtidas no Brasil:')
+print(dfAgrupado.loc['Brazil'])
 
 print('\n------------------------------------------------------')
 print('8.c')
 print('------------------------------------------------------')
-
-
-
+dfgrupPaisPont = dfInfluencers.groupby(by=[dfInfluencers['País'], 
+                                           dfInfluencers['Faixa de Pontuação']])['Total de Curtidas'].sum()
+print(dfgrupPaisPont.loc['Brazil'])
 print('\n==============================================')
 print('Questão 9\n')
 #======================================================================
