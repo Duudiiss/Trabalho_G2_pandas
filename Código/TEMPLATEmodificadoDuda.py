@@ -62,7 +62,7 @@ influenciadores em mercados específicos ou para campanhas direcionadas a uma au
 print('\n==============================================')
 print('Questão 1\n')
 #======================================================================
-# Transformando o tipo do arquivo e renomeando as colunas do inglês para português
+# Renomeie as colunas do inglês para português
 #======================================================================
 dfInfluencers = pd.read_excel("top_insta_influencers_data.xlsx", header= 0 , index_col= 1)
 dfInfluencers.rename(columns= {'channel_info': 'Nome do Canal', 'influence_score': 'Pontuação', 
@@ -133,7 +133,7 @@ print('Questão 4 -  Criar Categorias em função do valor de uma coluna\n')
 #
 # b) Criar coluna ‘Faixa de Pontuação’ que categoriza os influencers em 
 # 'Baixa', 'Média', 'Alta', 'Muito Alta' de acordo com a coluna ‘Pontuação’
-# e exiba os influencers com pontuaçãi 'Média'.
+# e exiba os influencers com pontuação 'Média'.
 #======================================================================
 print('/n------------------------------------------------------')
 print('4.a')
@@ -164,8 +164,8 @@ print(dfInfluencers.loc[dfInfluencers['Pontuação']>90])
 print('/n------------------------------------------------------')
 print('5.b')
 print('/n------------------------------------------------------')
-lNum= [0,1,2,3,4,5,6,7,8,9]
-print(dfInfluencers[dfInfluencers.index.isin(lNum)])
+lNum= ['0','1','2','3','4','5','6','7','8','9']
+print(dfInfluencers[dfInfluencers.index.str.isin(lNum)])
 
 print('/n------------------------------------------------------')
 print('5.c')
@@ -193,7 +193,7 @@ print(dfInfluencers['País'].value_counts())
 print('\n==============================================')
 print('Questão 7 - Gráficos\n')
 #======================================================================
-# a) gráfico de coluna que mostre a distribuição de influenciadores por país 
+# a) gráfico de barras que mostre a distribuição de influenciadores por país 
 # b) gráfico de pizza que mostre a distribuição dos influenciadores nos países do continente americano.
 #======================================================================
 print('\n------------------------------------------------------')
@@ -224,7 +224,7 @@ print('\n==============================================')
 print('Questão 8 - Medidas de Sumarização\n')
 #======================================================================
 # a) Mostrar valores minimo, maximo e médio da coluna 'Numero de Postagens'.
-# b) A partir da coluna ‘País’ agrupar os influencers e mosrtrar o total de 
+# b) A partir da coluna ‘País’ agrupar os influencers e mostrar o total de 
 # curtidas dos influencers brasileiros.
 # c) Agrupar influencers por 'País' e 'Faixa de Pontuação' e exibir o total 
 # de curtida de brasileiros por Faixas de Pontuação.
@@ -252,7 +252,8 @@ print('\n==============================================')
 print('Questão 9\n')
 #======================================================================
 # c) Tabela de Frequência dos países com inflenciadores de Pontuação acima de 90
-# d) Tabela de Frequência Percentual do Engajamento Diário dos 20 Primeiros Influenciadores Estadunidenses
+# d) Tabela de Frequência Percentual do Engajamento Diário dos 20 Primeiros 
+# Influenciadores Estadunidenses.
 #======================================================================
 print('------------------------------------------------------')
 print('9.a')
