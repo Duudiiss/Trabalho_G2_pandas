@@ -64,7 +64,7 @@ print('Questão 1\n')
 #======================================================================
 # Transformando o tipo do arquivo e renomeando as colunas do inglês para português
 #======================================================================
-dfInfluencers = pd.read_excel("C:\\Users\\meduarda\\Downloads\\top_insta_influencers_data.xlsx", header= 0 , index_col= 1)
+dfInfluencers = pd.read_excel("top_insta_influencers_data.xlsx", header= 0 , index_col= 1)
 dfInfluencers.rename(columns= {'channel_info': 'Nome do Canal', 'influence_score': 'Pontuação', 
                                'posts': 'Numero de Postagens', 'followers': 'Numero de Seguidores', 
                                'avg_likes': 'Média de Curtidas', 'country': 'País', 
@@ -90,8 +90,10 @@ for col in colunas:
     dfInfluencers[col] = dfInfluencers[col].str.replace('k', '00')
     dfInfluencers[col] = dfInfluencers[col].str.replace('m', '00000')
     dfInfluencers[col] = dfInfluencers[col].str.replace('b', '00000000')
+    
     dfInfluencers[col] = pd.to_numeric(dfInfluencers[col])
     
+dfInfluencers['Taxa de Engajamento em 60 dias (%)'] = dfInfluencers['Taxa de Engajamento em 60 dias (%)'].str.replace('%', '')
 print(dfInfluencers)
 
 print('------------------------------------------------------')
@@ -151,59 +153,41 @@ print('\n==============================================')
 print('Questão 5 - Filtros\n')
 #======================================================================
 # a) Filtrar Pontuação acima de 90
-# b) Filtrar a base de dados com uma lista aleatória de index.
-# c) Agora filtre o DataFrame usando a combinação dos itens anteriores.
+# b) Filtrar os influencers com numeros no Nome do Canal 
+# c) Filtrar os influencers com Curtidas maior que 1.000.000.000 e seguidores abaixo de 40.000.000.
 #======================================================================
 print('/n------------------------------------------------------')
 print('5.a')
 print('------------------------------------------------------')
-# print(dfInfluencers['Pontuação'].isin(list(range(91,dfInfluencers['Pontuação'].values.max()+1)) ))
-####?? duda ??###
 print(dfInfluencers.loc[dfInfluencers['Pontuação']>90])
 
 print('/n------------------------------------------------------')
 print('5.b')
 print('/n------------------------------------------------------')
-numerosAleatorios = list(random.sample(range(1,201),30)) 
-celebridades = ['Dwayne Johnson', 'Kylie Jenner', 'Cristiano Ronaldo', 'Ariana Grande', 'Selena Gomez',
-                'Kim Kardashian', 'Lionel Messi', 'Beyoncé', 'Justin Bieber', 'Taylor Swift']
-listaAleatóriaIndex = numerosAleatorios + celebridades 
-colunas_index = dfInfluencers.index.isin(listaAleatóriaIndex)
-print(colunas_index) 
+lNum= [0,1,2,3,4,5,6,7,8,9]
+print(dfInfluencers[dfInfluencers.index.isin(lNum)])
 
 print('/n------------------------------------------------------')
 print('5.c')
 print('------------------------------------------------------')
-print(dfInfluencers.loc[(dfInfluencers['Pontuação'].isin(list(range(91,dfInfluencers['Pontuação'].values.max()+1)) )== True),(dfInfluencers.columns.isin(listaAleatóriaIndex)== True)])
+print(dfInfluencers.loc[(dfInfluencers['Total de Curtidas']>1000000000) 
+                        & (dfInfluencers['Numero de Seguidores']<40000000)])
 
 print('\n==============================================')
 print('Questão 6 - Tabelas de Frequência\n')
 #======================================================================
-# a) Tabela de Frequência dos países com inflenciadores de Pontuação acima de 90
-# b) Tabela de Frequência Percentual do Engajamento Diário dos 20 Primeiros Influenciadores Estadunidenses
+# a) Tabela frequencia de influencers com baixo, médio e alto Crescimento/Engajamento.
+# b) Tabela de frequencia de influencers por país.
 #======================================================================
 print('\n------------------------------------------------------')
 print('6.a')
 print('------------------------------------------------------')
-MaioresInfluenciadores = dfInfluencers.loc[dfInfluencers['Pontuação']>90]
-
-TabelaFrequenciaSeguidores = pd.crosstab(index=MaioresInfluenciadores['Pontuação'], columns=dfInfluencers['País'])
-print(TabelaFrequenciaSeguidores)
-
-MaioresInfluenciadoresUsa = dfInfluencers[dfInfluencers['País'] == 'United States'].head(20)
-# TabelaFrequenciaSeguidores = pd.crosstab(index=MaioresInfluenciadoresUsa['Nome do Canal'], columns='Frequência', values=MaioresInfluenciadoresUsa['Numero de Seguidores'], aggfunc='sum')
-# print(TabelaFrequenciaSeguidores)
+print(dfInfluencers['Crescimento/Engajamento'].value_counts())
 
 print('\n------------------------------------------------------')
 print('6.b')
 print('------------------------------------------------------')
-def converte_str_em_porcentagem(valor_antigo):
-    valor_novo = valor_antigo.replace('%', '')
-    return float(valor_novo) 
-
-MaioresInfluenciadoresUsa['Taxa de Engajamento em 60 dias (%)'] = MaioresInfluenciadoresUsa['Taxa de Engajamento em 60 dias (%)'].apply(converte_str_em_porcentagem) 
-TabelaPorcentagemEngajamento = pd.crosstab(index=MaioresInfluenciadoresUsa['Nome do Canal'], columns='Percentual de Engajamento Diário', values=MaioresInfluenciadoresUsa['Taxa de Engajamento em 60 dias (%)'], aggfunc='mean')
-print(TabelaPorcentagemEngajamento)
+print(dfInfluencers['País'].value_counts())
 
 
 print('\n==============================================')
@@ -267,13 +251,35 @@ print(dfgrupPaisPont.loc['Brazil'])
 print('\n==============================================')
 print('Questão 9\n')
 #======================================================================
-# ENUNCIADO
+# c) Tabela de Frequência dos países com inflenciadores de Pontuação acima de 90
+# d) Tabela de Frequência Percentual do Engajamento Diário dos 20 Primeiros Influenciadores Estadunidenses
 #======================================================================
 print('------------------------------------------------------')
 print('9.a')
 print('------------------------------------------------------')
 
+
+
 print('/n------------------------------------------------------')
 print('9.b')
 print('------------------------------------------------------')
 
+
+
+print('/n------------------------------------------------------')
+print('9.c')
+print('------------------------------------------------------')
+
+MaioresInfluenciadores = dfInfluencers.loc[dfInfluencers['Pontuação']>90]
+
+TabelaFrequenciaSeguidores = pd.crosstab(index=MaioresInfluenciadores['Pontuação'], columns=dfInfluencers['País'])
+print(TabelaFrequenciaSeguidores)
+
+print('/n------------------------------------------------------')
+print('9.d')
+print('------------------------------------------------------')
+MaioresInfluenciadoresUsa = dfInfluencers[dfInfluencers['País'] == 'United States'].head(20)
+
+MaioresInfluenciadoresUsa['Taxa de Engajamento em 60 dias (%)'] = MaioresInfluenciadoresUsa['Taxa de Engajamento em 60 dias (%)']
+TabelaPorcentagemEngajamento = pd.crosstab(index=MaioresInfluenciadoresUsa['Nome do Canal'], columns='Percentual de Engajamento Diário', values=MaioresInfluenciadoresUsa['Taxa de Engajamento em 60 dias (%)'], aggfunc='mean')
+print(TabelaPorcentagemEngajamento)
