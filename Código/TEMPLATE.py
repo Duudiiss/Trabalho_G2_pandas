@@ -206,6 +206,9 @@ print('------------------------------------------------------')
 print('\n==============================================')
 print('Questão 9\n')
 #======================================================================
+# a) Tabela de Frequência Percentual do Engajamento Diário dos 20 Primeiros 
+# Influenciadores Espanhois.
+# b) Tabela de Frequência dos países com o Numero de Seguidores dos influenciadores
 # c) Tabela de Frequência dos países com inflenciadores de Pontuação acima de 90
 # d) Tabela de Frequência Percentual do Engajamento Diário dos 20 Primeiros 
 # Influenciadores Estadunidenses.
