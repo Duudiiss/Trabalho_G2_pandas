@@ -251,7 +251,8 @@ print(dfgrupPaisPont.loc['Brazil'])
 print('\n==============================================')
 print('Questão 9\n')
 #======================================================================
-# a) Tabela de Frequência 
+# a) Tabela de Frequência Percentual do Engajamento Diário dos 20 Primeiros 
+# Influenciadores Espanhois.
 # b) Tabela de Frequência dos países com o Numero de Seguidores dos influenciadores
 # c) Tabela de Frequência dos países com inflenciadores de Pontuação acima de 90
 # d) Tabela de Frequência Percentual do Engajamento Diário dos 20 Primeiros 
@@ -260,6 +261,11 @@ print('Questão 9\n')
 print('------------------------------------------------------')
 print('9.a')
 print('------------------------------------------------------')
+MaioresInfluenciadoresEsp = dfInfluencers[dfInfluencers['País'] == 'Spain'].head(20)
+
+MaioresInfluenciadoresEsp['Taxa de Engajamento em 60 dias (%)'] = MaioresInfluenciadoresEsp['Taxa de Engajamento em 60 dias (%)']
+TabelaPorcentagemEngajamentoEsp = pd.crosstab(index=MaioresInfluenciadoresEsp['Nome do Canal'], columns='Percentual de Engajamento Diário', values=MaioresInfluenciadoresEsp['Taxa de Engajamento em 60 dias (%)'], aggfunc='mean')
+print(TabelaPorcentagemEngajamentoEsp)
 
 
 
