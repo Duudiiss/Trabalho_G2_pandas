@@ -251,6 +251,8 @@ print(dfgrupPaisPont.loc['Brazil'])
 print('\n==============================================')
 print('Questão 9\n')
 #======================================================================
+# a) Tabela de Frequência 
+# b) Tabela de Frequência dos países com o Numero de Seguidores dos influenciadores
 # c) Tabela de Frequência dos países com inflenciadores de Pontuação acima de 90
 # d) Tabela de Frequência Percentual do Engajamento Diário dos 20 Primeiros 
 # Influenciadores Estadunidenses.
@@ -265,7 +267,8 @@ print('/n------------------------------------------------------')
 print('9.b')
 print('------------------------------------------------------')
 
-
+TabelaFrequenciaSeguidoresPaises = pd.crosstab(index=dfInfluencers['Numero de Seguidores'], columns=dfInfluencers['País'])
+print(TabelaFrequenciaSeguidoresPaises)
 
 print('/n------------------------------------------------------')
 print('9.c')
